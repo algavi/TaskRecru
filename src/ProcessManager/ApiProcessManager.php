@@ -14,7 +14,7 @@ class ApiProcessManager {
 	/**
 	 *  Získání všech pracovních inzerátů.
 	 */
-	public function getAllJobs() {
+	public function getAllJobs() :array {
 		return $this->getAllJobsProcess->run();
 	}
 

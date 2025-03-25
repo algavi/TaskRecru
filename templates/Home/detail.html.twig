@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<section class="hero bg-light">
+    <div class="container">
+        <h1>Práce</h1>
+        <p>Jednoduchý. Čistý. Přehledný.</p>
+    </div>
+</section>
+
+<section class="hero bg-light">
+    <div class="container" style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+        {% for job in jobs %}
+        <div class="card" style="width: 18rem; margin: 10px 0;">
+            <div class="card-body">
+                <h5 class="card-title">{{ job.title }}</h5>
+                <p class="card-text">{{ job.description|slice(0, 200)|striptags }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for workfield  in job.workfields %}
+                    <li class="list-group-item">{{ workfield.name }}</li>
+                {% endfor %}
+            </ul>
+            {% if job.salary.visible %}
+            <strong>
+                {{ job.salary.min }}
+                {% if job.salary.max %}
+                - {{ job.salary.max }}
+                {% endif %}
+                Kč
+            </strong>
+            {% endif %}
+            <div class="card-body">
+                <a href="#" class="card-link">Detail</a>
+            </div>
+        </div>
+        {% else %}
+            <h1>Dneška žadná robota</h1>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
