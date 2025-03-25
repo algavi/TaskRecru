@@ -5,7 +5,9 @@ namespace App\ProcessManager;
 
 class HomeProcessManager {
 
-	public function __construct(private Ho) {}
+	public function __construct() {
+
+	}
 
 	public function test() {
 		return "ahoj";
