@@ -30,7 +30,7 @@
                         </strong>
                     {% endif %}
                     <div class="card-body">
-                        <a href="#" class="card-link">Detail</a>
+                        <a href="{{ path('job_detail', { id: job.job_id }) }}" class="card-link">Detail</a>
                     </div>
                 </div>
             {% else %}

@@ -6,21 +6,19 @@ namespace App\Controller;
 use App\Controller\__core\BaseController;
 use App\Exception\ApiException;
 use App\ProcessManager\ApiProcessManager;
-use App\ProcessManager\HomeProcessManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends BaseController {
+class JobController extends BaseController {
 
 	public function __construct(
-		private readonly HomeProcessManager $homePM,
 		private readonly ApiProcessManager  $apiPM,
 	) {
 
 	}
 
-	#[Route('/', name: 'homepage')]
-	public function homepage(): Response {
+	#[Route('/', name: 'jobs')]
+	public function jobs(): Response {
 		try {
 			$data = $this->apiPM->getAllJobs();
 		} catch (ApiException $e) {
@@ -28,8 +26,15 @@ class HomeController extends BaseController {
 			$this->addFlash('error', 'Nastala chyba při získávání uživatelů.');
 		}
 
-		return $this->render('Home/default.html.twig', [
+		return $this->render('Jobs/default.html.twig', [
 			'jobs' => $data,
+		]);
+	}
+
+	#[Route('/prace/{id}', name: 'job_detail')]
+	public function jobDetail(int $id): Response {
+		return $this->render('Jobs/detail.html.twig', [
+			'job' => [],
 		]);
 	}
 
