@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Controller\__core\BaseController;
 use App\Exception\ApiException;
+use App\Form\CreateNewCandidateForm;
 use App\ProcessManager\ApiProcessManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class JobController extends BaseController {
 
 	public function __construct(
-		private readonly ApiProcessManager  $apiPM,
+		private readonly ApiProcessManager $apiPM,
 	) {
 
 	}
@@ -23,7 +24,7 @@ class JobController extends BaseController {
 			$data = $this->apiPM->getAllJobs();
 		} catch (ApiException $e) {
 			$data = [];
-			$this->addFlash('error', 'Nastala chyba při získávání uživatelů.');
+			$this->addFlash('error', $e->getMessage());
 		}
 
 		return $this->render('Jobs/default.html.twig', [
@@ -33,8 +34,28 @@ class JobController extends BaseController {
 
 	#[Route('/prace/{id}', name: 'job_detail')]
 	public function jobDetail(int $id): Response {
+		try {
+			$data = $this->apiPM->getJobDetail($id);
+		} catch (ApiException $e) {
+			$data = [];
+			$this->addFlash('error', $e->getMessage());
+		}
+
+
+		$form = $this->createForm(CreateNewCandidateForm::class);
+//		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$data = $form->getData();
+
+
+			$this->addFlash('success', 'Uloženo.');
+			return $this->redirectToRoute('homepage');
+		}
+
+
 		return $this->render('Jobs/detail.html.twig', [
-			'job' => [],
+			'job' => $data,
 		]);
 	}
 

@@ -23,6 +23,11 @@ class GetAllJobsProcess {
 	) {
 	}
 
+	/**
+	 *  Vrací všechny pracovní inzeráty.
+	 *
+	 * @throws \App\Exception\ApiException
+	 */
 	public function run(): array {
 		try {
 			return $this->cache->get($this->cacheKey, function (ItemInterface $item) {
