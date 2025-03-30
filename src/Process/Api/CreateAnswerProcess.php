@@ -20,13 +20,13 @@ class CreateAnswerProcess {
 	}
 
 	/**
-	 * Odešle data pro vytvoření kandidáta do Recruitis API.
+	 * Odešle data pro vytvoření odpovedi do Recruitis API.
 	 *
 	 * @throws \App\Exception\ApiException
 	 */
 	public function run(array $answerData, int $jobId): array {
 		$payload = [
-			'job_id'            => $jobId, // Zde případně dynamicky nastavit podle kontextu
+			'job_id'            => $jobId,
 			'name'              => $answerData['name'] ?? '',
 			'email'             => $answerData['email'] ?? null,
 			'skype'             => null,
@@ -34,7 +34,6 @@ class CreateAnswerProcess {
 			'facebook'          => null,
 			'twitter'           => null,
 			'phone'             => $answerData['phone'] ?? '',
-			// Uchováváme poznámku jako položku v poli "extra" se strukturou, která se uloží jako poznámka uchazeče
 			'extra'             => [
 				[
 					'note' => $answerData['poznamka'] ?? '',
@@ -56,7 +55,6 @@ class CreateAnswerProcess {
 
 			$body = (string)$response->getBody();
 			$data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-
 
 			if (!isset($data['payload'])) {
 				throw new ApiException('Odpověď z API neobsahuje očekávaný "payload".');

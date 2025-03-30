@@ -26,11 +26,6 @@ class CreateNewCandidateForm extends AbstractType {
 			->add('poznamka', TextareaType::class, [
 				'label'    => 'Poznámka',
 				'required' => false,
-			])
-			->add('file', FileType::class, [
-				'label'    => 'Soubor',
-				'required' => false,
-				'mapped'   => false,
 			]);
 	}
 }
