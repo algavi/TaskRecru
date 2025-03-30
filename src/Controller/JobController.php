@@ -21,16 +21,7 @@ class JobController extends BaseController {
 
 	#[Route('/', name: 'jobs')]
 	public function jobs(): Response {
-		try {
-			$data = $this->apiPM->getAllJobs();
-		} catch (ApiException $e) {
-			$data = [];
-			$this->addFlash('error', $e->getMessage());
-		}
-
-		return $this->render('Jobs/default.html.twig', [
-			'jobs' => $data,
-		]);
+		return $this->render('Jobs/default.html.twig');
 	}
 
 	#[Route('/prace/{id}', name: 'job_detail')]
