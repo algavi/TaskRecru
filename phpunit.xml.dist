@@ -1,0 +1,3 @@
+<testsuite name="Project Test Suite">
+    <directory>src/Test</directory>
+</testsuite>
