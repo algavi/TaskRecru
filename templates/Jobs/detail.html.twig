@@ -1,19 +1,27 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-<section class="hero bg-light">
-    <div class="container">
-        <h1>Práce detail -  {{ job.title }}</h1>
-        <br>
-        <br>
-        <p>{{ job.description|raw }}</p>
-    </div>
-</section>
+    <section class="hero bg-light">
+        <div class="container">
+            <h1>Práce detail - {{ job.title }}</h1>
+            <br>
+            <br>
+            <p>{{ job.description|raw }}</p>
+        </div>
+    </section>
 
 
     <section class="hero bg-light">
         <div class="container">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.poznamka) }}
+            {{ form_row(form.file) }}
 
+            <button type="submit">Odeslat</button>
+            {{ form_end(form) }}
         </div>
     </section>
 

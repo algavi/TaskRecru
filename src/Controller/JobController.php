@@ -6,14 +6,15 @@ namespace App\Controller;
 use App\Controller\__core\BaseController;
 use App\Exception\ApiException;
 use App\Form\CreateNewCandidateForm;
-use App\ProcessManager\ApiProcessManager;
+use App\ProcessManager\ApiRecruitisProcessManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class JobController extends BaseController {
 
 	public function __construct(
-		private readonly ApiProcessManager $apiPM,
+		private readonly ApiRecruitisProcessManager $apiPM,
 	) {
 
 	}
@@ -33,7 +34,7 @@ class JobController extends BaseController {
 	}
 
 	#[Route('/prace/{id}', name: 'job_detail')]
-	public function jobDetail(int $id): Response {
+	public function jobDetail(int $id, Request $request): Response {
 		try {
 			$data = $this->apiPM->getJobDetail($id);
 		} catch (ApiException $e) {
@@ -41,21 +42,23 @@ class JobController extends BaseController {
 			$this->addFlash('error', $e->getMessage());
 		}
 
-
+		// Formulář - vytvoření nového kandidáta
+		// TODO: podívat se jeslti to nejde napsat jako componenta v nette
 		$form = $this->createForm(CreateNewCandidateForm::class);
-//		$form->handleRequest($request);
-
+		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
-			$data = $form->getData();
-
-
-			$this->addFlash('success', 'Uloženo.');
-			return $this->redirectToRoute('homepage');
+			try {
+				$dataForm = $form->getData();
+				$this->apiPM->createCandidateProcess($dataForm);
+				$this->addFlash('success', 'Vaše žádanka byla poslána');
+			} catch (ApiException $e) {
+				$this->addFlash('error', $e->getMessage());
+			}
 		}
 
-
 		return $this->render('Jobs/detail.html.twig', [
-			'job' => $data,
+			'job'  => $data,
+			'form' => $form->createView(),
 		]);
 	}
 

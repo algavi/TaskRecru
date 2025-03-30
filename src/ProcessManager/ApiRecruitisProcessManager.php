@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace App\ProcessManager;
 
+use App\Form\CreateNewCandidateForm;
+use App\Process\Api\CreateCandidateProcess;
 use App\Process\Api\GetAllJobsProcess;
 use App\Process\Api\GetJobDetailProcess;
 
-class ApiProcessManager {
+class ApiRecruitisProcessManager {
 
 	public function __construct(
 		private readonly GetAllJobsProcess   $getAllJobsProcess,
-		private readonly GetJobDetailProcess $getJobDetailProcess
+		private readonly GetJobDetailProcess $getJobDetailProcess,
+		private readonly CreateCandidateProcess $createCandidateProcess,
 	) {
 	}
 
@@ -30,6 +33,16 @@ class ApiProcessManager {
 	 */
 	public function getJobDetail(int $jobId): array {
 		return $this->getJobDetailProcess->run($jobId);
+	}
+
+	/**
+	 * Odešle data pro vytvoření kandidáta do Recruitis API.
+	 *
+	 * @throws \App\Exception\ApiException
+	 */
+	public function createCandidateProcess(array $data) : void {
+		$this->createCandidateProcess->run($data);
+
 	}
 
 }
