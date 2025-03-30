@@ -40,7 +40,7 @@ class JobController extends BaseController {
 		if ($form->isSubmitted() && $form->isValid()) {
 			try {
 				$dataForm = $form->getData();
-				$this->apiPM->createCandidateProcess($dataForm);
+				$this->apiPM->createAnswerProcess($dataForm,$id);
 				$this->addFlash('success', 'Vaše žádanka byla poslána');
 			} catch (ApiException $e) {
 				$this->addFlash('error', $e->getMessage());

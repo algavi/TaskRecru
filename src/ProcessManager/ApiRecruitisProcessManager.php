@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\ProcessManager;
 
 use App\Form\CreateNewCandidateForm;
-use App\Process\Api\CreateCandidateProcess;
+use App\Process\Api\CreateAnswerProcess;
 use App\Process\Api\GetAllJobsProcess;
 use App\Process\Api\GetJobDetailProcess;
 
@@ -13,7 +13,7 @@ class ApiRecruitisProcessManager {
 	public function __construct(
 		private readonly GetAllJobsProcess   $getAllJobsProcess,
 		private readonly GetJobDetailProcess $getJobDetailProcess,
-		private readonly CreateCandidateProcess $createCandidateProcess,
+		private readonly CreateAnswerProcess $createCandidateProcess,
 	) {
 	}
 
@@ -40,8 +40,8 @@ class ApiRecruitisProcessManager {
 	 *
 	 * @throws \App\Exception\ApiException
 	 */
-	public function createCandidateProcess(array $data) : void {
-		$this->createCandidateProcess->run($data);
+	public function createAnswerProcess(array $data,int $jobId) : void {
+		$this->createCandidateProcess->run($data, $jobId);
 
 	}
 
